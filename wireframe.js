@@ -113,6 +113,8 @@ var cubeVertices = [
   ]
 
 	var armLength=7;
+	var pendulumH=1;
+
   var cable=[
     vec3(0,armLength,-0.5),
     vec3(0,0,-0.5)
@@ -120,42 +122,74 @@ var cubeVertices = [
 
 
   var cable1=[
-    vec3(0,armLength+1,-0.5),
+    vec3(0,armLength+pendulumH,-0.5),
     vec3(0,0,-0.5)
   ]
 
-	// var currentThetaArray=[0,0];
-	// var angularVelocityArray=[fg*Math.sin(currentTheta[0]*Math.PI/180),fg*Math.sin(currentTheta[1]*Math.PI/180)];
-	// var swingDirArray= ["right","right"];
-	// var angularAccelerationArray=[0,0];
+	var cable2=[
+    vec3(0,armLength+(2*pendulumH),-0.5),
+    vec3(0,0,-0.5)
+  ]
+	var cable3=[
+    vec3(0,armLength+(3*pendulumH),-0.5),
+    vec3(0,0,-0.5)
+  ]
+	var cable4=[
+    vec3(0,armLength+(4*pendulumH),-0.5),
+    vec3(0,0,-0.5)
+  ]
+	var cable5=[
+    vec3(0,armLength+(5*pendulumH),-0.5),
+    vec3(0,0,-0.5)
+  ]
+	var cable6=[
+    vec3(0,armLength+(6*pendulumH),-0.5),
+    vec3(0,0,-0.5)
+  ]
+	var cable7=[
+    vec3(0,armLength+(7*pendulumH),-0.5),
+    vec3(0,0,-0.5)
+  ]
+	var cable8=[
+    vec3(0,armLength+(8*pendulumH),-0.5),
+    vec3(0,0,-0.5)
+  ]
+
+
+	// var pendulumNumber=3;
+	// var cableM=translate(0,-armLength,0);
+	// var modelM=translate(-0.5,-armLength-0.5,0);
+	//
+	// var cableMArray=[
+	// 	cableM,
+	// 	mult(translate(0,0,-2),cableM),
+	// 	mult(translate(0,0,-4),cableM)
+	//
+	// ];
+	// var modelMArray=[
+	// 	modelM,
+	// 	mult(translate(0,0,-2),modelM),
+	// 	mult(translate(0,0,-4),modelM)
+	//
+	// ];
+	//
+	// var ytranslationArray=[0,-1,-2];
+	// var cableMTempArray=[
+	// 	mult(translate(0,ytranslationArray[0],0),cableM),
+	// 	mult(translate(0,ytranslationArray[1],0),cableMArray[1]),
+	// 	mult(translate(0,ytranslationArray[2],0),cableMArray[2])
+	// ];
+	// var modelMTempArray=[
+	// 	mult(translate(0,ytranslationArray[0],0),modelM),
+	// 	mult(translate(0,ytranslationArray[1],0),modelMArray[1]),
+	// 	mult(translate(0,ytranslationArray[2],0),modelMArray[2])
+	// ];
 	//
 	//
-	// setInterval(function(){
-	// 	for(var i=0;i<pendulumNumber;i++){
-	// 		// console.log(fg*Math.sin(currentTheta*Math.PI/180));
-	// 		if(swingDirArray[i]=="right"){
-	// 			angularAccelerationArray[i]=fg*Math.sin(currentThetaArray[i]*Math.PI/180);
-	// 			angularVelocityArray[i]+=angularAccelerationArray[i]
-	// 			currentThetaArray[i]-=angularVelocityArray[i];
-	// 			cableMArray[i]= mult(rotateZ(currentThetaArray[i]),cableMTemp);
-	// 			modelMArray[i]=mult(rotateZ(currentThetaArray[i]),modelMTemp);
-	//
-	// 			if( currentThetaArray[i]>= maxSwing){
-	// 				swingDirArray[i]="left";
-	// 			}
-	// 		}
-	// 		else if(swingDirArray[i]== "left"){
-	// 			angularAccelerationArray[i]=fg*Math.sin(currentThetaArray[i]*Math.PI/180);
-	// 			angularVelocityArray[i]-=angularAccelerationArray[i]
-	// 			currentThetaArray[i]+=angularVelocityArray[i];
-	// 			cableMArray[i]= mult(rotateZ(currentThetaArray[i]),cableMTemp);
-	// 			modelMArray[i]=mult(rotateZ(currentThetaArray[i]),modelMTemp);
-	//
-	// 			if( currentThetaArray[i]<= -maxSwing){
-	// 				swingDirArray[i]="right";
-	// 			}
-	// 		}
-	// 	}
-	//
-	//
-	// },20);
+	// var cableMTemp1Array=new Array(pendulumNumber);
+	// var fg=0.3;
+	// var maxSwing=90;
+	// var currentThetaArray=[45,65,65];
+	// var angularVelocityArray=[fg*Math.sin(currentThetaArray[0]*Math.PI/180),fg*Math.sin(currentThetaArray[1]*Math.PI/180),fg*Math.sin(currentThetaArray[2]*Math.PI/180)]
+	// var angularAccelerationArray=[0,0,0];
+	// var swingDirArray=["right","right","right"];

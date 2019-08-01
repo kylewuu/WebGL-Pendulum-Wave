@@ -61,8 +61,8 @@ window.onload = function init() {
 
 //general transformations=================================
 var view=lookAt(
-	vec3(0,-2,10),
-	vec3(0,-6,0),
+	vec3(0,-1.8,10),
+	vec3(0,-2,0),
 	vec3(0,1,0)
 );
 
@@ -83,50 +83,119 @@ var projectionM=persp;
 
 
 
+var pendulumNumber=9;
 var cableM=translate(0,-armLength,0);
-cableMTemp=cableM;
-
 var modelM=translate(-0.5,-armLength-0.5,0);
-modelMTemp=modelM;
 
-cableM1=mult(translate(0,0,-2),cableM);
-modelM1=mult(translate(0,0,-2),modelM);
-// var cableM1=translate(0,-armLength+1,0);
-// cableMTemp=cableM;
-//
-// var modelM1=translate(-0.5,-armLength+1-0.5,0);
-// modelMTemp=modelM;
-var ytranslationArray=[0,1];
-var cableMTempArray=[mult(translate(0,ytranslationArray[0],0),cableM),mult(translate(0,ytranslationArray[0],0),cableM1)];
-var modelMTempArray=[mult(translate(0,ytranslationArray[0],0),modelM),mult(translate(0,ytranslationArray[0],0),modelM1)];
-
-var cableMArray=[cableM,cableM1];
-var modelMArray=[modelM,modelM1];
+var cableMArray=[
+	cableM,
+	mult(translate(0,0,-2),cableM),
+	mult(translate(0,0,-4),cableM),
+	mult(translate(0,0,-6),cableM),
+	mult(translate(0,0,-8),cableM),
+	mult(translate(0,0,-10),cableM),
+	mult(translate(0,0,-12),cableM),
+	mult(translate(0,0,-14),cableM),
+	mult(translate(0,0,-16),cableM)
 
 
-var maxSwing=60;
-var currentTheta=45;
-var fg=0.2;
-var angularVelocity=fg*Math.sin(currentTheta*Math.PI/180);
-var swingDir= "right";
-var angularAcceleration=0;
-var pendulumNumber=2
+];
+var modelMArray=[
+	modelM,
+	mult(translate(0,0,-2),modelM),
+	mult(translate(0,0,-4),modelM),
+	mult(translate(0,0,-6),modelM),
+	mult(translate(0,0,-8),modelM),
+	mult(translate(0,0,-10),modelM),
+	mult(translate(0,0,-12),modelM),
+	mult(translate(0,0,-14),modelM),
+	mult(translate(0,0,-16),modelM)
 
-var currentThetaArray=[45,55];
-var angularVelocityArray=[fg*Math.sin(currentThetaArray[0]*Math.PI/180),fg*Math.sin(currentThetaArray[0]*Math.PI/180)]
-var angularAccelerationArray=[0,0];
-var swingDirArray=["right","right"];
+];
+
+var ytranslationArray=[0,-1*pendulumH,-2*pendulumH,-3*pendulumH,-4*pendulumH,-5*pendulumH,-6*pendulumH,-7*pendulumH, -8*pendulumH];
+console.log(ytranslationArray)
+// var ytranslationArray=[
+// 	pendulumH[0],
+// 	pendulumH[0]+pendulumH[1],
+// 	pendulumH[0]+pendulumH[1]+pendulumH[2],
+// 	pendulumH[0]+pendulumH[1]+pendulumH[2]+pendulumH[3],
+// 	pendulumH[0]+pendulumH[1]+pendulumH[2]+pendulumH[3]+pendulumH[4],
+// 	pendulumH[0]+pendulumH[1]+pendulumH[2]+pendulumH[3]+pendulumH[4]+pendulumH[5],
+// 	pendulumH[0]+pendulumH[1]+pendulumH[2]+pendulumH[3]+pendulumH[4]+pendulumH[6],
+// 	pendulumH[0]+pendulumH[1]+pendulumH[2]+pendulumH[3]+pendulumH[4]+pendulumH[6]+pendulumH[7],
+// 	pendulumH[0]+pendulumH[1]+pendulumH[2]+pendulumH[3]+pendulumH[4]+pendulumH[6]+pendulumH[7]+pendulumH[8]
+// ];
+// for(var i=0;i<pendulumNumber;i++){
+// 	ytranslationArray[i]=-ytranslationArray[i];
+// }
+
+
+var cableMTempArray=[
+	mult(translate(0,ytranslationArray[0],0),cableM),
+	mult(translate(0,ytranslationArray[1],0),cableMArray[1]),
+	mult(translate(0,ytranslationArray[2],0),cableMArray[2]),
+	mult(translate(0,ytranslationArray[3],0),cableMArray[3]),
+	mult(translate(0,ytranslationArray[4],0),cableMArray[4]),
+	mult(translate(0,ytranslationArray[5],0),cableMArray[5]),
+	mult(translate(0,ytranslationArray[6],0),cableMArray[6]),
+	mult(translate(0,ytranslationArray[7],0),cableMArray[7]),
+	mult(translate(0,ytranslationArray[8],0),cableMArray[8])
+
+];
+var modelMTempArray=[
+	mult(translate(0,ytranslationArray[0],0),modelM),
+	mult(translate(0,ytranslationArray[1],0),modelMArray[1]),
+	mult(translate(0,ytranslationArray[2],0),modelMArray[2]),
+	mult(translate(0,ytranslationArray[3],0),modelMArray[3]),
+	mult(translate(0,ytranslationArray[4],0),modelMArray[4]),
+	mult(translate(0,ytranslationArray[5],0),modelMArray[5]),
+	mult(translate(0,ytranslationArray[6],0),modelMArray[6]),
+	mult(translate(0,ytranslationArray[7],0),modelMArray[7]),
+	mult(translate(0,ytranslationArray[8],0),modelMArray[8])
+
+];
+
+
+var cableMTemp1Array=new Array(pendulumNumber);
+var fg=0.5;
+var maxSwing=90;
+var swingStart=60;
+var currentThetaArray=[swingStart,swingStart-5,swingStart-10,swingStart-15,swingStart-20,swingStart-25,swingStart-30,swingStart-35,swingStart-40];
+var angularVelocityArray=[
+	fg*Math.sin(currentThetaArray[0]*Math.PI/180),
+	fg*Math.sin(currentThetaArray[1]*Math.PI/180),
+	fg*Math.sin(currentThetaArray[2]*Math.PI/180),
+	fg*Math.sin(currentThetaArray[3]*Math.PI/180),
+	fg*Math.sin(currentThetaArray[4]*Math.PI/180),
+	fg*Math.sin(currentThetaArray[5]*Math.PI/180),
+	fg*Math.sin(currentThetaArray[6]*Math.PI/180),
+	fg*Math.sin(currentThetaArray[7]*Math.PI/180),
+	fg*Math.sin(currentThetaArray[8]*Math.PI/180)
+
+];
+var angularAccelerationArray=[0,0,0,0,0,0,0,0,0];
+var swingDirArray=["right","right","right","right","right","right","right","right","right"];
 
 setInterval(function(){
 	for(var i=0;i<pendulumNumber;i++){
-		// console.log(fg*Math.sin(currentTheta*Math.PI/180));
+
 		if(swingDirArray[i]=="right"){
+			// cableMTempArray[i]=mult(translate(0,ytranslationArray[i],0),cableMTempArray[i]);
+			// cableMTempArray[i]=mult(translate(0,-ytranslationArray[i],0),cableMTempArray[i]);
+
 
 			angularAccelerationArray[i]=fg*Math.sin(currentThetaArray[i]*Math.PI/180);
 			angularVelocityArray[i]+=angularAccelerationArray[i];
 			currentThetaArray[i]-=angularVelocityArray[i];
 			cableMArray[i]= mult(rotateZ(currentThetaArray[i]),cableMTempArray[i]);
 			modelMArray[i] =mult(rotateZ(currentThetaArray[i]),modelMTempArray[i]);
+
+			// cableMTemp1Array[i]= mult(rotateZ(currentThetaArray[i]),cableMTempArray[i]);
+			// modelMArray[i] =mult(rotateZ(currentThetaArray[i]),modelMTempArray[i]);
+			//
+			// cableMArray[i]=mult(translate(0,-ytranslationArray[i],0),cableMTemp1Array[i]);
+			// cableMTempArray[i]=cableM[i];
 
 
 			if( currentThetaArray[i]>= maxSwing){
@@ -147,6 +216,9 @@ setInterval(function(){
 				swingDirArray[i]="right";
 			}
 		}
+		cableMArray[i]=mult(translate(0,-ytranslationArray[i],0),cableMArray[i]);
+		modelMArray[i]=mult(translate(0,-ytranslationArray[i],0),modelMArray[i]);
+
 	}
 
 
@@ -207,6 +279,41 @@ function render() {
 	var normalMLocation= gl.getUniformLocation(program,'normalM');
 	gl.uniformMatrix4fv(normalMLocation,false,flatten(normalM1));
 	pendulumRender(cable1,modelMArray[1],cableMArray[1]);
+
+	normalM2=mult(viewM,modelMArray[2]);
+	var normalMLocation= gl.getUniformLocation(program,'normalM');
+	gl.uniformMatrix4fv(normalMLocation,false,flatten(normalM2));
+	pendulumRender(cable2,modelMArray[2],cableMArray[2]);
+
+	normalM3=mult(viewM,modelMArray[3]);
+	var normalMLocation= gl.getUniformLocation(program,'normalM');
+	gl.uniformMatrix4fv(normalMLocation,false,flatten(normalM3));
+	pendulumRender(cable3,modelMArray[3],cableMArray[3]);
+
+	normalM4=mult(viewM,modelMArray[4]);
+	var normalMLocation= gl.getUniformLocation(program,'normalM');
+	gl.uniformMatrix4fv(normalMLocation,false,flatten(normalM4));
+	pendulumRender(cable4,modelMArray[4],cableMArray[4]);
+
+	normalM5=mult(viewM,modelMArray[5]);
+	var normalMLocation= gl.getUniformLocation(program,'normalM');
+	gl.uniformMatrix4fv(normalMLocation,false,flatten(normalM5));
+	pendulumRender(cable5,modelMArray[5],cableMArray[5]);
+
+	normalM6=mult(viewM,modelMArray[6]);
+	var normalMLocation= gl.getUniformLocation(program,'normalM');
+	gl.uniformMatrix4fv(normalMLocation,false,flatten(normalM6));
+	pendulumRender(cable6,modelMArray[6],cableMArray[6]);
+
+	normalM7=mult(viewM,modelMArray[7]);
+	var normalMLocation= gl.getUniformLocation(program,'normalM');
+	gl.uniformMatrix4fv(normalMLocation,false,flatten(normalM7));
+	pendulumRender(cable7,modelMArray[7],cableMArray[7]);
+
+	normalM8=mult(viewM,modelMArray[8]);
+	var normalMLocation= gl.getUniformLocation(program,'normalM');
+	gl.uniformMatrix4fv(normalMLocation,false,flatten(normalM8));
+	pendulumRender(cable8,modelMArray[8],cableMArray[8]);
 
 
 	getLighting();
