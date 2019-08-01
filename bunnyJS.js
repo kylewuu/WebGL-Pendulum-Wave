@@ -96,9 +96,9 @@ modelM1=mult(translate(0,0,-2),modelM);
 //
 // var modelM1=translate(-0.5,-armLength+1-0.5,0);
 // modelMTemp=modelM;
-var ytranslationArray=[0,-1];
-var cableMTempArray=[mult(translate(0,ytranslationArray[0],0),cableM),mult(translate(0,ytranslationArray[1],0),cableM1)];
-var modelMTempArray=[mult(translate(0,ytranslationArray[0],0),modelM),mult(translate(0,ytranslationArray[1],0),modelM1)];
+var ytranslationArray=[0,1];
+var cableMTempArray=[mult(translate(0,ytranslationArray[0],0),cableM),mult(translate(0,ytranslationArray[0],0),cableM1)];
+var modelMTempArray=[mult(translate(0,ytranslationArray[0],0),modelM),mult(translate(0,ytranslationArray[0],0),modelM1)];
 
 var cableMArray=[cableM,cableM1];
 var modelMArray=[modelM,modelM1];
@@ -113,7 +113,7 @@ var angularAcceleration=0;
 var pendulumNumber=2
 
 var currentThetaArray=[45,55];
-var angularVelocityArray=[fg*Math.sin(currentThetaArray[0]*Math.PI/180),fg*Math.sin(currentThetaArray[1]*Math.PI/180)]
+var angularVelocityArray=[fg*Math.sin(currentThetaArray[0]*Math.PI/180),fg*Math.sin(currentThetaArray[0]*Math.PI/180)]
 var angularAccelerationArray=[0,0];
 var swingDirArray=["right","right"];
 
@@ -194,14 +194,18 @@ function render() {
 	// nmatrixTemp=mult(view,ztranslationM);
 	// nmatrixTemp=mult(view,nmatrixTemp);
 	// nmatrixTemp=mult(translationM,nmatrixTemp);
-	normalM=mult(viewM,modelM);
+
 
 	// normalM=normalMatrix(nmatrixTemp);
 	// normalM=normalMatrix(view); //needs to be split up because this isn't workingview
+	normalM=mult(viewM,modelMArray[0]);
 	var normalMLocation= gl.getUniformLocation(program,'normalM');
 	gl.uniformMatrix4fv(normalMLocation,false,flatten(normalM));
-
 	pendulumRender(cable,modelMArray[0],cableMArray[0]);
+
+	normalM1=mult(viewM,modelMArray[1]);
+	var normalMLocation= gl.getUniformLocation(program,'normalM');
+	gl.uniformMatrix4fv(normalMLocation,false,flatten(normalM1));
 	pendulumRender(cable1,modelMArray[1],cableMArray[1]);
 
 
