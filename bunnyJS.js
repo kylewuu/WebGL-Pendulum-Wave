@@ -53,6 +53,8 @@ window.onload = function init() {
 		gl.vertexAttribPointer( vPositionCube, 3, gl.FLOAT, false, 0, 0 );
     // gl.enableVertexAttribArray( vPositionCube );
 
+		//second pendulum-----------------------------------------------------------------
+
 
     render();
 };
@@ -60,7 +62,7 @@ window.onload = function init() {
 //general transformations=================================
 var view=lookAt(
 	vec3(0,-2,10),
-	vec3(0,-5,0),
+	vec3(0,-6,0),
 	vec3(0,1,0)
 );
 
@@ -79,14 +81,76 @@ var projectionM=persp;
 // console.log(translate(0,0,0));
 
 
-var translationM=translate(-0.5,-5.5,0);
-var cableM=mat4();
-cableM=translate(0,-5,0);
 
-// var rotationM=mult(xrotationM,yrotationM);
-var rotationM=rotateZ(-10);
-modelM=mult(rotationM,translationM);
-cableM=mult(rotationM,cableM);
+
+var cableM=translate(0,-armLength,0);
+cableMTemp=cableM;
+
+var modelM=translate(-0.5,-armLength-0.5,0);
+modelMTemp=modelM;
+
+cableM1=mult(translate(0,0,-2),cableM);
+modelM1=mult(translate(0,0,-2),modelM);
+// var cableM1=translate(0,-armLength+1,0);
+// cableMTemp=cableM;
+//
+// var modelM1=translate(-0.5,-armLength+1-0.5,0);
+// modelMTemp=modelM;
+var ytranslationArray=[0,-1];
+var cableMTempArray=[mult(translate(0,ytranslationArray[0],0),cableM),mult(translate(0,ytranslationArray[1],0),cableM1)];
+var modelMTempArray=[mult(translate(0,ytranslationArray[0],0),modelM),mult(translate(0,ytranslationArray[1],0),modelM1)];
+
+var cableMArray=[cableM,cableM1];
+var modelMArray=[modelM,modelM1];
+
+
+var maxSwing=60;
+var currentTheta=45;
+var fg=0.2;
+var angularVelocity=fg*Math.sin(currentTheta*Math.PI/180);
+var swingDir= "right";
+var angularAcceleration=0;
+var pendulumNumber=2
+
+var currentThetaArray=[45,55];
+var angularVelocityArray=[fg*Math.sin(currentThetaArray[0]*Math.PI/180),fg*Math.sin(currentThetaArray[1]*Math.PI/180)]
+var angularAccelerationArray=[0,0];
+var swingDirArray=["right","right"];
+
+setInterval(function(){
+	for(var i=0;i<pendulumNumber;i++){
+		// console.log(fg*Math.sin(currentTheta*Math.PI/180));
+		if(swingDirArray[i]=="right"){
+
+			angularAccelerationArray[i]=fg*Math.sin(currentThetaArray[i]*Math.PI/180);
+			angularVelocityArray[i]+=angularAccelerationArray[i];
+			currentThetaArray[i]-=angularVelocityArray[i];
+			cableMArray[i]= mult(rotateZ(currentThetaArray[i]),cableMTempArray[i]);
+			modelMArray[i] =mult(rotateZ(currentThetaArray[i]),modelMTempArray[i]);
+
+
+			if( currentThetaArray[i]>= maxSwing){
+				swingDirArray[i]="left";
+			}
+		}
+		else if(swingDirArray[i]== "left"){
+			angularAccelerationArray[i]=fg*Math.sin(currentThetaArray[i]*Math.PI/180);
+			angularVelocityArray[i]-=angularAccelerationArray[i]
+			currentThetaArray[i]+=angularVelocityArray[i];
+			cableMArray[i]= mult(rotateZ(currentThetaArray[i]),cableMTempArray[i]);
+			modelMArray[i]=mult(rotateZ(currentThetaArray[i]),modelMTempArray[i]);
+
+			cableMArray[i]= mult(translate(0,ytranslationArray[i],0),cableMTempArray[i]);
+			modelMArray[i]=mult(translate(0,ytranslationArray[i],0),modelMTempArray[i]);
+
+			if( currentThetaArray[i]<= -maxSwing){
+				swingDirArray[i]="right";
+			}
+		}
+	}
+
+
+},20);
 
 
 
@@ -130,42 +194,20 @@ function render() {
 	// nmatrixTemp=mult(view,ztranslationM);
 	// nmatrixTemp=mult(view,nmatrixTemp);
 	// nmatrixTemp=mult(translationM,nmatrixTemp);
-	normalM=mult(viewM,mult(translationM,mult(ztranslationM,rotationM)));
+	normalM=mult(viewM,modelM);
 
 	// normalM=normalMatrix(nmatrixTemp);
 	// normalM=normalMatrix(view); //needs to be split up because this isn't workingview
 	var normalMLocation= gl.getUniformLocation(program,'normalM');
 	gl.uniformMatrix4fv(normalMLocation,false,flatten(normalM));
 
-	gl.bindBuffer(gl.ARRAY_BUFFER, vBuffer);
-	// gl.bindBuffer(gl.ARRAY_BUFFER, iBuffer);
-	// gl.bindBuffer(gl.ARRAY_BUFFER, fBuffer);
-	gl.vertexAttribPointer( vPosition, 3, gl.FLOAT, false, 0, 0 );
-	// gl.enableVertexAttribArray( vPosition );
-	// var matrixuniformLocations= gl.getUniformLocation(program, 'matrix')
-	// gl.uniformMatrix4fv(matrixuniformLocations,false,matrix);
-	gl.uniformMatrix4fv(gl.getUniformLocation(program, 'modelM'),false,flatten(modelM));
-	gl.uniformMatrix4fv(gl.getUniformLocation(program, 'viewM'),false,flatten(viewM));
-	gl.uniformMatrix4fv(gl.getUniformLocation(program, 'projectionM'),false,flatten(projectionM));
-  gl.drawElements( gl.TRIANGLES, faces.length*3,gl.UNSIGNED_SHORT,faces);
-	//
-	gl.bindBuffer(gl.ARRAY_BUFFER,cBuffer);
-	gl.vertexAttribPointer( vPositionCube, 3, gl.FLOAT, false, 0, 0 );
-	gl.enableVertexAttribArray( vPositionCube );
-	// var matrixuniformLocationsCube= gl.getUniformLocation(program, 'matrix')
-	// gl.uniformMatrix4fv(matrixuniformLocationsCube,false,cubematrix);
-	gl.uniformMatrix4fv(gl.getUniformLocation(program, 'modelM'),false,flatten(cableM));
-	gl.uniformMatrix4fv(gl.getUniformLocation(program, 'viewM'),false,flatten(viewM));
-	gl.uniformMatrix4fv(gl.getUniformLocation(program, 'projectionM'),false,flatten(projectionM));
-	gl.drawArrays(gl.LINE_STRIP, 0, cable.length );
+	pendulumRender(cable,modelMArray[0],cableMArray[0]);
+	pendulumRender(cable1,modelMArray[1],cableMArray[1]);
 
 
 	getLighting();
 
-	lightPosition=mult(viewM,lightPositionTemp);
-	lightPosition=mult(projectionM,lightPositionTemp);
-	var positionUniformPositionLocation=gl.getUniformLocation(program,'lPosition');
-	gl.uniform4fv(positionUniformPositionLocation,lightPosition);
+
 
   window.requestAnimationFrame(render);
 

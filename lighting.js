@@ -70,4 +70,9 @@ function getLighting(){
 	gl.uniform1f(ksUniformLocation,ks);
 	var shininessLocation= gl.getUniformLocation(program,'shininessLvl')
 	gl.uniform1f(shininessLocation,shininessLvl);
+
+	lightPosition=mult(viewM,lightPositionTemp);
+	lightPosition=mult(projectionM,lightPositionTemp);
+	var positionUniformPositionLocation=gl.getUniformLocation(program,'lPosition');
+	gl.uniform4fv(positionUniformPositionLocation,lightPosition);
 }
