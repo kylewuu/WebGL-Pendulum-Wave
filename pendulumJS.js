@@ -173,7 +173,8 @@ var cableMTemp1Array=new Array(pendulumNumber);
 var fg=0.5;
 var maxSwing=90;
 var swingStart=60;
-var currentThetaArray=[swingStart,swingStart-5,swingStart-10,swingStart-15,swingStart-20,swingStart-25,swingStart-30,swingStart-35,swingStart-40];
+// var currentThetaArray=[swingStart,swingStart-5,swingStart-10,swingStart-15,swingStart-20,swingStart-25,swingStart-30,swingStart-35,swingStart-40];
+var currentThetaArray=[60,53.9863091,48.99138513,44.54437953,40.57197455,36.96418968,33.65950298,30.60397938,27.75584792]
 var angularVelocityArray=[
 	fg*Math.sin(currentThetaArray[0]*Math.PI/180),
 	fg*Math.sin(currentThetaArray[1]*Math.PI/180),
@@ -241,29 +242,6 @@ setInterval(function(){
 //render---------------------------------------
 function render() {
 
-	// matrixTempView=mult(translationM,view)
-
-
-
-	// //
-
-
-	// matrixTemp=(mult(translationM,mult(ztranslationM,rotationM)));
-	// matrixTemp=(mult(translationM,rotationM));
-
-	// cubematrixM=mult(cubereflectiveM,orbitRotationM);
-
-	// cubeTempView=mult(orbitRotationM,view);
-	// cubeTempProj=mult(orbitRotationM,persp);
-	//
-	// cubematrixTemp=mult(cubeTempProj,cubeTempView);
-
-	// cubematrixTemp=mult(persp,view);
-	// cubematrixTemp=mult(orbitRotationM,cubematrixTemp);
-	// cubematrixTemp=orbitRotationM;
-
-
-	// Binding the vertex buffer\
 
   gl.clear( gl.COLOR_BUFFER_BIT );
 
@@ -273,15 +251,7 @@ function render() {
   gl.depthFunc(gl.LEQUAL);
   gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
-	// nmatrixTemp=mult(xrotationM,yrotationM);
-	// nmatrixTemp=mult(ztranslationM,matrixTemp);
-	// nmatrixTemp=mult(view,ztranslationM);
-	// nmatrixTemp=mult(view,nmatrixTemp);
-	// nmatrixTemp=mult(translationM,nmatrixTemp);
 
-
-	// normalM=normalMatrix(nmatrixTemp);
-	// normalM=normalMatrix(view); //needs to be split up because this isn't workingview
 	normalM=mult(viewM,modelMArray[0]);
 	var normalMLocation= gl.getUniformLocation(program,'normalM');
 	gl.uniformMatrix4fv(normalMLocation,false,flatten(normalM));
