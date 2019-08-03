@@ -1,3 +1,6 @@
+Kyle Wu 301343359
+Problem 2
+
 This is a render of a realistic simulation of a frictionless pendulum wave/pendulum snake.
 
 This render is implemented with my original physics to make it behave very realistically. A light model was also implemented to make it seem more realistic.

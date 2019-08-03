@@ -170,7 +170,7 @@ var modelMTempArray=[
 
 
 var cableMTemp1Array=new Array(pendulumNumber);
-var fg=0.5;
+var fg=0.35;
 var maxSwing=90;
 var swingStart=60;
 // var currentThetaArray=[swingStart,swingStart-5,swingStart-10,swingStart-15,swingStart-20,swingStart-25,swingStart-30,swingStart-35,swingStart-40];
